@@ -26,5 +26,14 @@ test.describe('Ordino Home Dashboard - Test Suite', () => {
         await loginPage.step_clickLogin();           
         await homePage.step_logout();
     });
+
+    test('Verify Dashboard Title', async ({ loginPage, homePage }) => {
+        await loginPage.goto();
+        await loginPage.step_enterUsername("admin@platform.com");
+        await loginPage.step_enterPassword("admin");
+        await loginPage.step_clickLogin();           
+        await homePage.step_verifyDashboardTitle();
+    }); 
     
+
 });
