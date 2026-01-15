@@ -33,6 +33,7 @@ test.describe('Ordino Home Dashboard - Test Suite', () => {
         await loginPage.step_enterPassword("admin");
         await loginPage.step_clickLogin();           
         await homePage.step_verifyDashboardTitle();
+        await homePage.step_verifyDashboardWelcomeText();
     }); 
     
 
