@@ -1,26 +1,19 @@
 {
   "name": "testcypress115",
   "version": "1.0.0",
-  "description": "ordino-pw-test",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "initialize": "node ordino.initialize.js --initialize",
     "oi:run:test": "node ordino.initialize.js --runTest",
-    "oi:open:test": "node ordino.initialize.js --openTest",
-    "oi:debug:test": "node ordino.initialize.js --debugTest",
-    "oi:open:report": "node ordino.initialize.js --openReport"
+    "oi:open:test": "node ordino.initialize.js --openTest"
   },
-  "keywords": [
-    "ordino.ai",
-    "ordino-test"
-  ],
-  "author": "@ordino",
-  "license": "MIT",
-  "devDependencies": {
-    "@ordino.ai/ordino-engine": "1.0.0-pw.24",
+  "dependencies": {
+    "@ordino.ai/ordino-engine": "2.2.0-cy.22",
     "typescript": "^5.2.2",
-    "dotenv": "^16.4.7",
-    "allure-commandline": "^2.34.0",
-    "allure-playwright": "^3.2.2",
-    "@playwright/test": "^1.52.0"
+    "dotenv": "^16.4.7"
   }
 }

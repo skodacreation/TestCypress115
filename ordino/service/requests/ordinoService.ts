@@ -1,120 +1,71 @@
-import { test, expect } from '@playwright/test';
+import { ordino, ordinoUpdate } from "../payloads/OrdinoPayloads";
 import { oi, ApiServiceType } from "@ordino.ai/ordino-engine";
-import { ordino, ordinoUpdate } from '../payloads/ordinoPayloads';
 
 const http = oi.api(ApiServiceType.HTTP);
 
-export class OrdinoService {
-
-    private baseUrl: string = 'https://demoapi.ordino.ai/api/';
-    
-    constructor() {
-        http.baseUrl(this.baseUrl);
-    }
-    
-    async create_item() {
+class OrdinoService {
+    static create_item() {
         http.baseUrl("https://demoapi.ordino.ai/api/");
         http.setUrl("items");
-        const response = await http.requestPost(ordino);
-        
-        // Validate response status
-        expect(response.status()).toBe(201);
-        
-        const responseBody = await response.json();
-        
-        // Validate response structure and properties
-        expect(responseBody).toHaveProperty('status');
-        expect(responseBody.status).toBe('success');
-        expect(responseBody).toHaveProperty('message');
-        expect(responseBody.message).toBe('Item created successfully');
-        
-        // Validate data object properties
-        expect(responseBody.data).toHaveProperty('id');
-        expect(responseBody.data).toHaveProperty('name');
-        expect(responseBody.data.name).toBe(ordino.name);
-        expect(responseBody.data).toHaveProperty('description');
-        expect(responseBody.data.description).toBe(ordino.description);
-        expect(responseBody.data).toHaveProperty('category');
-        expect(responseBody.data.category).toBe(ordino.category);
-        expect(responseBody.data).toHaveProperty('createdAt');
-        expect(responseBody.data).toHaveProperty('updatedAt');
-        
-        // Store itemId for future use
-        const itemId = responseBody.data.id;
-        http.setValue("itemId", itemId);
-        
-        return responseBody.data;
+        http.requestPost(ordino).then((response) => {
+            expect(response.status).to.eq(201);
+            expect(response.body).to.have.property('status', 'success');
+            expect(response.body).to.have.property('message', 'Item created successfully');
+            expect(response.body.data).to.have.property('id');
+            expect(response.body.data).to.have.property('name', ordino.name);
+            expect(response.body.data).to.have.property('description', ordino.description);
+            expect(response.body.data).to.have.property('category', ordino.category);
+            expect(response.body.data).to.have.property('createdAt');
+            expect(response.body.data).to.have.property('updatedAt');
+            http.setValue("itemId", response.body.data.id);
+        });
+        return this;
     }
 
-    async get_all_items() {
+    static get_all_items() {
         http.setUrl(`items`);
-        const response = await http.requestGet();
-        
-        // Validate response status
-        expect(response.status()).toBe(200);
-        
-        const responseBody = await response.json();
-        
-        return responseBody;
+        http.requestGet().then((response) => {
+            expect(response.status).to.eq(200);
+
+        });
+        return this;
     }
 
-    async get_item_by_Id() {
+    static get_item_by_Id() {
         http.setUrl(`items/${http.getValue("itemId")}`);
-        const response = await http.requestGet();
-        
-        // Validate response status
-        expect(response.status()).toBe(200);
-        
-        const responseBody = await response.json();
-        
-        return responseBody;
+        http.requestGet().then((response) => {
+            expect(response.status).to.eq(200);
+
+        });
+        return this;
     }
 
-    async update_item() {
+    static update_item() {
         http.setUrl(`items/${http.getValue("itemId")}`);
-        const response = await http.requestPut(ordinoUpdate);
-        
-        // Validate response status
-        expect(response.status()).toBe(200);
-        
-        const responseBody = await response.json();
-        
-        // Validate response structure and properties
-        expect(responseBody).toHaveProperty('status');
-        expect(responseBody.status).toBe('success');
-        expect(responseBody).toHaveProperty('message');
-        expect(responseBody.message).toBe('Item updated successfully');
-        
-        // Validate data object properties
-        expect(responseBody.data).toHaveProperty('id');
-        expect(responseBody.data).toHaveProperty('name');
-        expect(responseBody.data.name).toBe(ordinoUpdate.name);
-        expect(responseBody.data).toHaveProperty('description');
-        expect(responseBody.data.description).toBe(ordinoUpdate.description);
-        expect(responseBody.data).toHaveProperty('category');
-        expect(responseBody.data.category).toBe(ordinoUpdate.category);
-        expect(responseBody.data).toHaveProperty('createdAt');
-        expect(responseBody.data).toHaveProperty('updatedAt');
-        
-        return responseBody.data;
+        http.requestPut(ordinoUpdate).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('status', 'success');
+            expect(response.body).to.have.property('message', 'Item updated successfully');
+            expect(response.body.data).to.have.property('id');
+            expect(response.body.data).to.have.property('name', ordinoUpdate.name);
+            expect(response.body.data).to.have.property('description', ordinoUpdate.description);
+            expect(response.body.data).to.have.property('category', ordinoUpdate.category);
+            expect(response.body.data).to.have.property('createdAt');
+            expect(response.body.data).to.have.property('updatedAt');
+        });
+        return this;
     }
 
-    async delete_item() {
+    static delete_item() {
         http.setUrl(`items/${http.getValue("itemId")}`);
-        const response = await http.requestDelete();
-        
-        // Validate response status
-        expect(response.status()).toBe(200);
-        
-        const responseBody = await response.json();
-        
-        // Validate response structure and properties
-        expect(responseBody).toHaveProperty('status');
-        expect(responseBody.status).toBe('success');
-        expect(responseBody).toHaveProperty('message');
-        expect(responseBody.message).toBe('Item deleted successfully');
-        
-        return responseBody;
+        http.requestDelete().then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('status', 'success');
+            expect(response.body).to.have.property('message', 'Item deleted successfully');
+        });
+        return this;
     }
 
 }
+
+export default OrdinoService;
